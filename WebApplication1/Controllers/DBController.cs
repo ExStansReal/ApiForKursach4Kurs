@@ -616,6 +616,7 @@ namespace WebApplication1.Controllers
                 return list;
             }
         }
+
         //
         //
         //Sklad
@@ -669,6 +670,238 @@ namespace WebApplication1.Controllers
                     thing.Home = reader.GetString(2);
                     thing.Body = reader.GetString(3);
                     thing.Street = reader.GetString(4);
+                    list.Add(thing);
+                }
+                reader.Close();
+                conn.Close();
+                return list;
+            }
+        }
+
+        //
+        //
+        //Statistic
+        //
+        //
+
+        [HttpGet]
+        [Route("GetStatistic")]
+        public IEnumerable<Statistic> GetStatistic()
+        {
+            string command = "USE HelperDataBase " +
+                "select * from [dbo].[Statistic]";
+            List<Statistic> list = new List<Statistic>();
+            using (SqlConnection conn
+                = new SqlConnection(new SQLConnection().ConnectionString))
+            {
+                conn.Open();
+                SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
+                while (reader.Read())
+                {
+                    Statistic thing = new Statistic();
+                    thing.Id = reader.GetInt32(0);
+                    thing.Taken_order_Id = reader.GetInt32(1);
+                    thing.Date = reader.GetDateTime(2);
+                    list.Add(thing);
+                }
+                reader.Close();
+                conn.Close();
+                return list;
+            }
+        }
+        [HttpGet]
+        [Route("GetStatistic/{id}")]
+        public IEnumerable<Statistic> GetStatistic(int id)
+        {
+            string command = "USE HelperDataBase " +
+               $"select* from [dbo].[Statistic] WHERE ID_Statistic = {id}";
+            List<Statistic> list = new List<Statistic>();
+            using (SqlConnection conn
+                = new SqlConnection(new SQLConnection().ConnectionString))
+            {
+                conn.Open();
+                SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
+                while (reader.Read())
+                {
+                    Statistic thing = new Statistic();
+                    thing.Id = reader.GetInt32(0);
+                    thing.Taken_order_Id = reader.GetInt32(1);
+                    thing.Date = reader.GetDateTime(2);
+                    list.Add(thing);
+                }
+                reader.Close();
+                conn.Close();
+                return list;
+            }
+        }
+
+        //
+        //
+        //Taken_Device
+        //
+        //
+
+        [HttpGet]
+        [Route("GetTaken_Device")]
+        public IEnumerable<Taken_Device> GetTaken_Device()
+        {
+            string command = "USE HelperDataBase " +
+                "select * from [dbo].[Taken_Device]";
+            List<Taken_Device> list = new List<Taken_Device>();
+            using (SqlConnection conn
+                = new SqlConnection(new SQLConnection().ConnectionString))
+            {
+                conn.Open();
+                SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
+                while (reader.Read())
+                {
+                    Taken_Device thing = new Taken_Device();
+                    thing.Id = reader.GetInt32(0);
+                    thing.Cell_Id = reader.GetInt32(1);
+                    thing.Personal_Card_Id = reader.GetInt32(2);
+                    thing.Date = reader.GetDateTime(3);
+                    list.Add(thing);
+                }
+                reader.Close();
+                conn.Close();
+                return list;
+            }
+        }
+        [HttpGet]
+        [Route("GetTaken_Device/{id}")]
+        public IEnumerable<Taken_Device> GetTaken_Device(int id)
+        {
+            string command = "USE HelperDataBase " +
+               $"select* from [dbo].[Taken_Device] WHERE ID_Taken_Device = {id}";
+            List<Taken_Device> list = new List<Taken_Device>();
+            using (SqlConnection conn
+                = new SqlConnection(new SQLConnection().ConnectionString))
+            {
+                conn.Open();
+                SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
+                while (reader.Read())
+                {
+                    Taken_Device thing = new Taken_Device();
+                    thing.Id = reader.GetInt32(0);
+                    thing.Cell_Id = reader.GetInt32(1);
+                    thing.Personal_Card_Id = reader.GetInt32(2);
+                    thing.Date = reader.GetDateTime(3);
+                    list.Add(thing);
+                }
+                reader.Close();
+                conn.Close();
+                return list;
+            }
+        }
+
+        //
+        //
+        //Taken_Order
+        //
+        //
+
+        [HttpGet]
+        [Route("GetTaken_Order")]
+        public IEnumerable<Taken_Order> GetTaken_Order()
+        {
+            string command = "USE HelperDataBase " +
+                "select * from [dbo].[Taken_Order]";
+            List<Taken_Order> list = new List<Taken_Order>();
+            using (SqlConnection conn
+                = new SqlConnection(new SQLConnection().ConnectionString))
+            {
+                conn.Open();
+                SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
+                while (reader.Read())
+                {
+                    Taken_Order thing = new Taken_Order();
+                    thing.Id = reader.GetInt32(0);
+                    thing.Order_Id = reader.GetInt32(1);
+                    thing.Personal_Card_Id = reader.GetInt32(2);
+                    thing.Date = reader.GetDateTime(3);
+                    thing.Status = reader.GetString(4);
+                    list.Add(thing);
+                }
+                reader.Close();
+                conn.Close();
+                return list;
+            }
+        }
+        [HttpGet]
+        [Route("GetTaken_Order/{id}")]
+        public IEnumerable<Taken_Order> GetTaken_Order(int id)
+        {
+            string command = "USE HelperDataBase " +
+               $"select* from [dbo].[Taken_Order] WHERE ID_Taken_Order = {id}";
+            List<Taken_Order> list = new List<Taken_Order>();
+            using (SqlConnection conn
+                = new SqlConnection(new SQLConnection().ConnectionString))
+            {
+                conn.Open();
+                SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
+                while (reader.Read())
+                {
+                    Taken_Order thing = new Taken_Order();
+                    thing.Id = reader.GetInt32(0);
+                    thing.Order_Id = reader.GetInt32(1);
+                    thing.Personal_Card_Id = reader.GetInt32(2);
+                    thing.Date = reader.GetDateTime(3);
+                    thing.Status = reader.GetString(4);
+                    list.Add(thing);
+                }
+                reader.Close();
+                conn.Close();
+                return list;
+            }
+        }
+
+        //
+        //
+        //Type_Order
+        //
+        //
+
+        [HttpGet]
+        [Route("GetType_Order")]
+        public IEnumerable<Type_Order> GetType_Order()
+        {
+            string command = "USE HelperDataBase " +
+                "select * from [dbo].[Type_Order]";
+            List<Type_Order> list = new List<Type_Order>();
+            using (SqlConnection conn
+                = new SqlConnection(new SQLConnection().ConnectionString))
+            {
+                conn.Open();
+                SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
+                while (reader.Read())
+                {
+                    Type_Order thing = new Type_Order();
+                    thing.Id = reader.GetInt32(0);
+                    thing.Name = reader.GetString(1);
+                    list.Add(thing);
+                }
+                reader.Close();
+                conn.Close();
+                return list;
+            }
+        }
+        [HttpGet]
+        [Route("GetType_Order/{id}")]
+        public IEnumerable<Type_Order> GetType_Order(int id)
+        {
+            string command = "USE HelperDataBase " +
+               $"select* from [dbo].[Type_Order] WHERE ID_Type_Order = {id}";
+            List<Type_Order> list = new List<Type_Order>();
+            using (SqlConnection conn
+                = new SqlConnection(new SQLConnection().ConnectionString))
+            {
+                conn.Open();
+                SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
+                while (reader.Read())
+                {
+                    Type_Order thing = new Type_Order();
+                    thing.Id = reader.GetInt32(0);
+                    thing.Name = reader.GetString(1);
                     list.Add(thing);
                 }
                 reader.Close();
