@@ -8,5 +8,6 @@
         public int Acsess { get; set; }
         public int Post_ID { get; set; }
         public int Employee_ID { get; set; }
+        public int? Contact_information_Id { get; set; }
     }
 }

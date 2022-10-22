@@ -13,6 +13,9 @@ namespace WebApplication1.Models
         public DateTime Date_of_birth { get; set; }
         public string Education { get; set; }
 
+        public string? email { get; set; }
+        public string? dolztost { get; set; }
+
       
     }
 }
