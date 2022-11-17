@@ -14,6 +14,7 @@ namespace WebApplication1.Controllers
     [Route("[controller]")]
     public class DBController : ControllerBase
     {
+        protected string ConnectionString { get; set; } = @"Data Source=DESKTOP-PSEJFIA\SQLEXPRESS;Integrated Security=True";
         //
         //
         //EMPLOYEE
@@ -24,10 +25,10 @@ namespace WebApplication1.Controllers
         public IEnumerable<Employee> GetEmployee()
         {
             string command = "USE HelperDataBase " +
-                "select* from Employee";
+                 "select* from Employee";
             List<Employee> employes = new List<Employee>();
-            using (SqlConnection conn
-                = new SqlConnection(new SQLConnection().ConnectionString))
+            using (System.Data.SqlClient.SqlConnection conn
+                = new System.Data.SqlClient.SqlConnection(ConnectionString))
             {
                 conn.Open();
                 SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
@@ -79,8 +80,8 @@ namespace WebApplication1.Controllers
             string command = "USE HelperDataBase " +
                 $"select* from Employee WHERE ID_Employee = {id}";
             List<Employee> employes = new List<Employee>();
-            using (SqlConnection conn
-                = new SqlConnection(new SQLConnection().ConnectionString))
+            using (System.Data.SqlClient.SqlConnection conn
+               = new System.Data.SqlClient.SqlConnection(ConnectionString))
             {
                 conn.Open();
                 SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
@@ -90,12 +91,35 @@ namespace WebApplication1.Controllers
                     employee.Id = reader.GetInt32(0);
                     employee.Surname = reader.GetString(1);
                     employee.Name = reader.GetString(2);
-                    employee.Patronymic = reader.GetString(3);
+                    try
+                    {
+                        employee.Patronymic = reader.GetString(3);
+                    }
+                    catch
+                    {
+                        employee.Patronymic = "";
+                    }
                     employee.Series = reader.GetString(4);
                     employee.Number = reader.GetString(5);
                     employee.Date_of_birth = reader.GetDateTime(6);
                     employee.Education = reader.GetString(7);
-                    employes.Add(employee);
+                    try
+                    {
+                        employee.email = reader.GetString(8);
+                    }
+                    catch
+                    {
+                        employee.email = "";
+                    }
+                    try
+                    {
+                        employee.dolztost = reader.GetString(9);
+                    }
+                    catch
+                    {
+                        employee.dolztost = "";
+                    }
+                        employes.Add(employee);
                 }
                 reader.Close();
                 conn.Close();
@@ -116,7 +140,7 @@ namespace WebApplication1.Controllers
                 "select* from Cell";
             List<Cell> list = new List<Cell>();
             using (SqlConnection conn
-                = new SqlConnection(new SQLConnection().ConnectionString))
+               = new SqlConnection(ConnectionString))
             {
                 conn.Open();
                 SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
@@ -125,7 +149,14 @@ namespace WebApplication1.Controllers
                     Cell thing = new Cell();
                     thing.Id = reader.GetInt32(0);
                     thing.Number = reader.GetInt32(1);
-                    thing.Device_ID = reader.GetInt32(2);
+                    try
+                    {
+                        thing.Device_ID = reader.GetInt32(2);
+                    }
+                    catch
+                    {
+                        thing.Device_ID = null;
+                    }
                     list.Add(thing);
                 }
                 reader.Close();
@@ -141,7 +172,7 @@ namespace WebApplication1.Controllers
                $"select* from Cell WHERE ID_Cell = {id}";
             List<Cell> list = new List<Cell>();
             using (SqlConnection conn
-                = new SqlConnection(new SQLConnection().ConnectionString))
+               = new SqlConnection(ConnectionString))
             {
                 conn.Open();
                 SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
@@ -150,7 +181,14 @@ namespace WebApplication1.Controllers
                     Cell thing = new Cell();
                     thing.Id = reader.GetInt32(0);
                     thing.Number = reader.GetInt32(1);
-                    thing.Device_ID = reader.GetInt32(2);
+                    try
+                    {
+                        thing.Device_ID = reader.GetInt32(2);
+                    }
+                    catch
+                    {
+                        thing.Device_ID = null;
+                    }
                     list.Add(thing);
                 }
                 reader.Close();
@@ -172,7 +210,7 @@ namespace WebApplication1.Controllers
                 "select* from Contact_Information";
             List<ContactInformation> list = new List<ContactInformation>();
             using (SqlConnection conn
-                = new SqlConnection(new SQLConnection().ConnectionString))
+                 = new SqlConnection(ConnectionString))
             {
                 conn.Open();
                 SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
@@ -199,7 +237,7 @@ namespace WebApplication1.Controllers
                $"select* from Contact_Information WHERE ID_Contact_Information = {id}";
             List<ContactInformation> list = new List<ContactInformation>();
             using (SqlConnection conn
-                = new SqlConnection(new SQLConnection().ConnectionString))
+                = new SqlConnection(ConnectionString))
             {
                 conn.Open();
                 SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
@@ -232,7 +270,7 @@ namespace WebApplication1.Controllers
                 "select* from Device";
             List<Device> list = new List<Device>();
             using (SqlConnection conn
-                = new SqlConnection(new SQLConnection().ConnectionString))
+                 = new SqlConnection(ConnectionString))
             {
                 conn.Open();
                 SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
@@ -290,7 +328,7 @@ namespace WebApplication1.Controllers
                 "select * from Feedback";
             List<Feedback> list = new List<Feedback>();
             using (SqlConnection conn
-                = new SqlConnection(new SQLConnection().ConnectionString))
+                = new SqlConnection(ConnectionString))
             {
                 conn.Open();
                 SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
@@ -301,6 +339,7 @@ namespace WebApplication1.Controllers
                     thing.Taken_order_Id = reader.GetInt32(1);
                     thing.Feedback_from_klient = reader.GetString(2);
                     thing.Feedback_from_employee = reader.GetString(3);
+                    thing.Deleted = reader.GetInt32(4);
                     list.Add(thing);
                 }
                 reader.Close();
@@ -316,7 +355,7 @@ namespace WebApplication1.Controllers
                $"select * from Feedback WHERE ID_Feedback = {id}";
             List<Feedback> list = new List<Feedback>();
             using (SqlConnection conn
-                = new SqlConnection(new SQLConnection().ConnectionString))
+               = new SqlConnection(ConnectionString))
             {
                 conn.Open();
                 SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
@@ -327,6 +366,7 @@ namespace WebApplication1.Controllers
                     thing.Taken_order_Id = reader.GetInt32(1);
                     thing.Feedback_from_klient = reader.GetString(2);
                     thing.Feedback_from_employee = reader.GetString(3);
+                    thing.Deleted = reader.GetInt32(4);
                     list.Add(thing);
                 }
                 reader.Close();
@@ -423,6 +463,13 @@ namespace WebApplication1.Controllers
                     thing.Klient_Id = reader.GetInt32(2);
                     thing.Description = reader.GetString(3);
                     thing.Payment = reader.GetInt32(4);
+                    if (thing.Description.Length > 20)
+                    {
+                        thing.Name = thing.Description.Substring(0, 20);
+                        thing.Name += "..";
+                    }
+                    else
+                        thing.Name = thing.Description;
                     list.Add(thing);
                 }
                 reader.Close();
@@ -450,6 +497,13 @@ namespace WebApplication1.Controllers
                     thing.Klient_Id = reader.GetInt32(2);
                     thing.Description = reader.GetString(3);
                     thing.Payment = reader.GetInt32(4);
+                    if (thing.Description.Length > 20)
+                    {
+                        thing.Name = thing.Description.Substring(0, 20);
+                        thing.Name += "..";
+                    }
+                    else
+                        thing.Name = thing.Description;
                     list.Add(thing);
                 }
                 reader.Close();
@@ -485,7 +539,14 @@ namespace WebApplication1.Controllers
                     thing.Acsess = reader.GetInt32(3);
                     thing.Post_ID = reader.GetInt32(4);
                     thing.Employee_ID = reader.GetInt32(5);
-                    thing.Contact_information_Id = reader.GetInt32(6);
+                    try
+                    {
+                        thing.Contact_information_Id = reader.GetInt32(6);
+                    }
+                    catch
+                    {
+
+                    }
                     list.Add(thing);
                 }
                 reader.Close();
@@ -515,7 +576,14 @@ namespace WebApplication1.Controllers
                     thing.Acsess = reader.GetInt32(3);
                     thing.Post_ID = reader.GetInt32(4);
                     thing.Employee_ID = reader.GetInt32(5);
-                    thing.Contact_information_Id = reader.GetInt32(6);
+                    try
+                    {
+                        thing.Contact_information_Id = reader.GetInt32(6);
+                    }
+                    catch
+                    {
+
+                    }
                     list.Add(thing);
                 }
                 reader.Close();
@@ -581,66 +649,7 @@ namespace WebApplication1.Controllers
             }
         }
 
-        //
-        //
-        //Post
-        //
-        //
-
-        [HttpGet]
-        [Route("GetReview_about_klient")]
-        public IEnumerable<Review_about_klient> GetReview_about_klient()
-        {
-            string command = "USE HelperDataBase " +
-                "select * from [dbo].[Review_about_klient]";
-            List<Review_about_klient> list = new List<Review_about_klient>();
-            using (SqlConnection conn
-                = new SqlConnection(new SQLConnection().ConnectionString))
-            {
-                conn.Open();
-                SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
-                while (reader.Read())
-                {
-                    Review_about_klient thing = new Review_about_klient();
-                    thing.Id = reader.GetInt32(0);
-                    thing.Klient_id = reader.GetInt32(1);
-                    thing.Personal_card_id = reader.GetInt32(2);
-                    thing.Feedback_about_klient = reader.GetString(3);
-                    thing.Rayting = reader.GetDouble(4);
-                    list.Add(thing);
-                }
-                reader.Close();
-                conn.Close();
-                return list;
-            }
-        }
-        [HttpGet]
-        [Route("GetReview_about_klient/{id}")]
-        public IEnumerable<Review_about_klient> GetReview_about_klient(int id)
-        {
-            string command = "USE HelperDataBase " +
-               $"select* from [dbo].[Review_about_klient] WHERE ID_Review_about_klient = {id}";
-            List<Review_about_klient> list = new List<Review_about_klient>();
-            using (SqlConnection conn
-                = new SqlConnection(new SQLConnection().ConnectionString))
-            {
-                conn.Open();
-                SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
-                while (reader.Read())
-                {
-                    Review_about_klient thing = new Review_about_klient();
-                    thing.Id = reader.GetInt32(0);
-                    thing.Klient_id = reader.GetInt32(1);
-                    thing.Personal_card_id = reader.GetInt32(2);
-                    thing.Feedback_about_klient = reader.GetString(3);
-                    thing.Rayting = reader.GetDouble(4);
-                    list.Add(thing);
-                }
-                reader.Close();
-                conn.Close();
-                return list;
-            }
-        }
+    
 
         //
         //
@@ -650,21 +659,28 @@ namespace WebApplication1.Controllers
 
         [HttpGet]
         [Route("GetSklad")]
-        public IEnumerable<Sklad> GetSklad()
+        public IEnumerable<Storage> GetStorage()
         {
             string command = "USE HelperDataBase " +
-                "select * from [dbo].[Sklad]";
-            List<Sklad> list = new List<Sklad>();
+                "select * from [dbo].[Storage]";
+            List<Storage> list = new List<Storage>();
             using (SqlConnection conn
-                = new SqlConnection(new SQLConnection().ConnectionString))
+                = new SqlConnection(ConnectionString))
             {
                 conn.Open();
                 SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
                 while (reader.Read())
                 {
-                    Sklad thing = new Sklad();
+                    Storage thing = new Storage();
                     thing.Id = reader.GetInt32(0);
-                    thing.Cell_Id = reader.GetInt32(1);
+                    try
+                    {
+                        thing.Cell_Id = reader.GetInt32(1);
+                    }
+                    catch
+                    {
+                        thing.Cell_Id = null;
+                    }
                     thing.Home = reader.GetString(2);
                     thing.Body = reader.GetString(3);
                     thing.Street = reader.GetString(4);
@@ -677,21 +693,28 @@ namespace WebApplication1.Controllers
         }
         [HttpGet]
         [Route("GetSklad/{id}")]
-        public IEnumerable<Sklad> GetSklad(int id)
+        public IEnumerable<Storage> GetStorage(int id)
         {
             string command = "USE HelperDataBase " +
-               $"select* from [dbo].[Sklad] WHERE ID_Sklad = {id}";
-            List<Sklad> list = new List<Sklad>();
+               $"select* from [dbo].[Storage] WHERE ID_Storage = {id}";
+            List<Storage> list = new List<Storage>();
             using (SqlConnection conn
-                = new SqlConnection(new SQLConnection().ConnectionString))
+                = new SqlConnection(ConnectionString))
             {
                 conn.Open();
                 SqlDataReader reader = new SqlCommand(command, conn).ExecuteReader();
                 while (reader.Read())
                 {
-                    Sklad thing = new Sklad();
+                    Storage thing = new Storage();
                     thing.Id = reader.GetInt32(0);
-                    thing.Cell_Id = reader.GetInt32(1);
+                    try
+                    {
+                        thing.Cell_Id = reader.GetInt32(1);
+                    }
+                    catch
+                    {
+                        thing.Cell_Id = null;
+                    }
                     thing.Home = reader.GetString(2);
                     thing.Body = reader.GetString(3);
                     thing.Street = reader.GetString(4);
